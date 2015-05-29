@@ -1,3 +1,3 @@
 # CalendarEvents
 
-In development.
+Developing.
