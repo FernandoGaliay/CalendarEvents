@@ -14,22 +14,27 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import calendar.caparso.es.calendar.util.DateUtil;
+
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
 
     // Un mes por delante y por detras.
-    private Integer DATE_INTERVAL_SIZE = 60;
+    private int DATE_INTERVAL_SIZE = 60;
+
+    private int DAY_MODE = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_main, container, false);
+
         // Instantiate a ViewPager and a PagerAdapter.
         final ViewPager mPager = (ViewPager) rootView.findViewById(R.id.pager);
-        final ScreenSlidePagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getActivity().getSupportFragmentManager(), initDate());
+        final ScreenSlidePagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getActivity().getSupportFragmentManager(), DateUtil.initDates(DATE_INTERVAL_SIZE), DAY_MODE);
         mPager.setAdapter(mPagerAdapter);
         mPager.setCurrentItem(DATE_INTERVAL_SIZE / 2);
 
@@ -46,12 +51,12 @@ public class MainActivityFragment extends Fragment {
             public void onPageSelected(int position) {
                 // Primera posicion
                 if (position == 0) {
-                    mPagerAdapter.addDates(position, previousDates(mPagerAdapter.getDate(position)));
+                    mPagerAdapter.addDates(position, DateUtil.previousDates(DATE_INTERVAL_SIZE, mPagerAdapter.getDateByPosition(position)));
                     mPager.setCurrentItem(DATE_INTERVAL_SIZE, false);
                 }
                 // Ultima posicion
-                else if(position == mPagerAdapter.getCount() - 1){
-                    mPagerAdapter.addDates(nextDates(mPagerAdapter.getDate(position)));
+                else if (position == mPagerAdapter.getCount() - 1) {
+                    mPagerAdapter.addDates(DateUtil.nextDates(DATE_INTERVAL_SIZE, mPagerAdapter.getDateByPosition(position)));
                 }
 
             }
@@ -65,38 +70,6 @@ public class MainActivityFragment extends Fragment {
         return rootView;
     }
 
-    public List<Date> initDate(){
-        List<Date> dateList = new ArrayList<Date>();
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.DATE, -((DATE_INTERVAL_SIZE / 2) + 1));
-        for(int i = 0; i <= DATE_INTERVAL_SIZE; i++){
-            calendar.add(Calendar.DATE, 1);
-            dateList.add(calendar.getTime());
-        }
-        return dateList;
-    }
 
-    public List<Date> previousDates(Date firstDate){
-        List<Date> dateList = new ArrayList<Date>();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(firstDate);
-        for(int i = DATE_INTERVAL_SIZE; i > 0; i--){
-            calendar.setTime(firstDate);
-            calendar.add(Calendar.DATE, -i);
-            dateList.add(calendar.getTime());
-        }
-        return dateList;
-    }
-
-    public List<Date> nextDates(Date lastDate){
-        List<Date> dateList = new ArrayList<Date>();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(lastDate);
-        for(int i = 1; i <= DATE_INTERVAL_SIZE; i++){
-            calendar.add(Calendar.DATE, 1);
-            dateList.add(calendar.getTime());
-        }
-        return dateList;
-    }
 
 }

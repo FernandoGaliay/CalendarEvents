@@ -2,27 +2,38 @@ package calendar.caparso.es.calendar;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
+import calendar.caparso.es.calendar.adapter.DayAdapter;
+import calendar.caparso.es.calendar.vo.EventVO;
 
 /**
  * Created by Fernando Galiay on 28/05/2015.
  */
 public class ScreenSlidePageFragment extends Fragment {
 
-    public static final String KEY_MILISECONDS = "KEY_MILISECONDS";
+    public static final String KEY_DATA = "KEY_MILISECONDS";
 
-    private Long miliseconds;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
 
-    public static ScreenSlidePageFragment newInstance(Long miliseconds) {
+    private List<EventVO> eventVOList;
+
+    public static ScreenSlidePageFragment newInstance(List<EventVO> eventVOList) {
         ScreenSlidePageFragment f = new ScreenSlidePageFragment();
         Bundle args = new Bundle();
-        args.putLong(KEY_MILISECONDS, miliseconds);
+        args.putSerializable(KEY_DATA, new ArrayList<EventVO>(eventVOList));
         f.setArguments(args);
         return f;
     }
@@ -30,7 +41,7 @@ public class ScreenSlidePageFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        miliseconds = getArguments().getLong(KEY_MILISECONDS);
+        eventVOList = (ArrayList<EventVO>) getArguments().getSerializable(KEY_DATA);
     }
 
     @Override
@@ -38,10 +49,13 @@ public class ScreenSlidePageFragment extends Fragment {
                              Bundle savedInstanceState) {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_pager, container, false);
-        TextView tvFecha = (TextView) rootView.findViewById(R.id.tv_fecha);
-        SimpleDateFormat sf = new SimpleDateFormat("dd/MM/yyyy");
-        Date fecha = new Date(miliseconds);
-        tvFecha.setText(sf.format(fecha));
+        mRecyclerView = (RecyclerView) rootView.findViewById(R.id.rv_calendar);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(getActivity());
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mAdapter = new DayAdapter(eventVOList);
+        mRecyclerView.setAdapter(mAdapter);
+
         return rootView;
     }
 }
