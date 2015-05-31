@@ -15,6 +15,8 @@ import java.util.Date;
 import java.util.List;
 
 import calendar.caparso.es.calendar.util.DateUtil;
+import calendar.caparso.es.calendar.vo.Event;
+import calendar.caparso.es.calendar.vo.EventVO;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -32,44 +34,32 @@ public class MainActivityFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_main, container, false);
 
-        // Instantiate a ViewPager and a PagerAdapter.
-        final ViewPager mPager = (ViewPager) rootView.findViewById(R.id.pager);
-        final ScreenSlidePagerAdapter mPagerAdapter = new ScreenSlidePagerAdapter(getActivity().getSupportFragmentManager(), DateUtil.initDates(DATE_INTERVAL_SIZE), DAY_MODE);
-        mPager.setAdapter(mPagerAdapter);
-        mPager.setCurrentItem(DATE_INTERVAL_SIZE / 2);
-
-        //Bind the title indicator to the adapter
-        TitlePageIndicator titleIndicator = (TitlePageIndicator)rootView.findViewById(R.id.titles);
-        titleIndicator.setViewPager(mPager);
-        titleIndicator.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        CalendarEventView calendarEventView = (CalendarEventView) rootView.findViewById(R.id.ce_day);
+        calendarEventView.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
-            public void onPageScrolled(int i, float v, int i1) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                // Primera posicion
-                if (position == 0) {
-                    mPagerAdapter.addDates(position, DateUtil.previousDates(DATE_INTERVAL_SIZE, mPagerAdapter.getDateByPosition(position)));
-                    mPager.setCurrentItem(DATE_INTERVAL_SIZE, false);
-                }
-                // Ultima posicion
-                else if (position == mPagerAdapter.getCount() - 1) {
-                    mPagerAdapter.addDates(DateUtil.nextDates(DATE_INTERVAL_SIZE, mPagerAdapter.getDateByPosition(position)));
-                }
-
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
+            public List<? extends Event> onDateSelected(int position, Date pageDate) {
+                return getEventList();
             }
         });
 
         return rootView;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
+    private List<EventVO> getEventList() {
+        List<EventVO> eventVOList = new ArrayList<EventVO>();
+        EventVO eventVO = new EventVO();
+        eventVO.setTitle("Title event");
+        Calendar calendar = Calendar.getInstance();
+        eventVO.setStartDate(calendar.getTime());
+        calendar.add(Calendar.DATE, 1);
+        eventVO.setEndDate(calendar.getTime());
+        eventVOList.add(eventVO);
+        return eventVOList;
+    }
 
 }

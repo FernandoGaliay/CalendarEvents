@@ -3,22 +3,22 @@ package calendar.caparso.es.calendar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.util.SparseArray;
+import android.view.ViewGroup;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import calendar.caparso.es.calendar.constant.CalendarMode;
 import calendar.caparso.es.calendar.util.DateUtil;
-import calendar.caparso.es.calendar.vo.EventVO;
 
 class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
     private int calendarMode;
 
     private List<Date> dateList;
+
+    private SparseArray<Fragment> registeredFragments = new SparseArray<Fragment>();
+
 
     public ScreenSlidePagerAdapter(FragmentManager fm, List<Date> dateList, int mode) {
         super(fm);
@@ -27,18 +27,26 @@ class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
     }
 
     @Override
-    public Fragment getItem(int position) {
-        List<EventVO> eventVOList = new ArrayList<EventVO>();
-        EventVO eventVO = new EventVO();
-        eventVO.setTitle("Title event");
-        Calendar calendar = Calendar.getInstance();
-        eventVO.setInitDate(calendar.getTime());
-        calendar.add(Calendar.DATE, 1);
-        eventVO.setEndDate(calendar.getTime());
-        eventVOList.add(eventVO);
-        return new ScreenSlidePageFragment().newInstance(eventVOList);
+    public SlideDayFragment getItem(int position) {
+        return new SlideDayFragment().newInstance();
     }
 
+    @Override
+    public Object instantiateItem(ViewGroup container, int position) {
+        Fragment fragment = (Fragment) super.instantiateItem(container, position);
+        registeredFragments.put(position, fragment);
+        return fragment;
+    }
+
+    @Override
+    public void destroyItem(ViewGroup container, int position, Object object) {
+        registeredFragments.remove(position);
+        super.destroyItem(container, position, object);
+    }
+
+    public Fragment getRegisteredFragment(int position) {
+        return registeredFragments.get(position);
+    }
     @Override
     public int getCount() {
         return dateList.size();
@@ -51,8 +59,7 @@ class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-
-        return DateUtil.getSimpleDateFormatByMode(getCalendarMode()).format(dateList.get(position));
+        return DateUtil.getSimpleDateFormatByMode(getCalendarMode()).format(dateList.get(position)).toUpperCase();
     }
 
     /**

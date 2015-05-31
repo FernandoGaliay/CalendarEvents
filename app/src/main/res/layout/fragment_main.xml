@@ -1,22 +1,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
+              xmlns:calendar="http://schemas.android.com/apk/res-auto"
               xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical"
               tools:context=".MainActivityFragment">
 
-    <com.viewpagerindicator.TitlePageIndicator
-        android:id="@+id/titles"
+    <calendar.caparso.es.calendar.CalendarEventView
+        android:id="@+id/ce_day"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="#000000"
-        app:selectedColor="#000000"/>
-
-    <android.support.v4.view.ViewPager
-        android:id="@+id/pager"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        calendar:dateIntervalSize="5"
+        calendar:dateMode="day"/>
 
 </LinearLayout>

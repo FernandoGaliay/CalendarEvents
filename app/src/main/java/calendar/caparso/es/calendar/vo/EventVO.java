@@ -1,39 +1,46 @@
 package calendar.caparso.es.calendar.vo;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by Fernando Galiay on 30/05/2015.
  */
-public class EventVO {
+public class EventVO extends Event implements Serializable {
 
-    private String title;
+    private String titulo;
 
-    private Date initDate;
+    private Date start;
 
-    private Date endDate;
+    private Date end;
 
-    public String getTitle() {
-        return title;
-    }
-
+    @Override
     public void setTitle(String title) {
-        this.title = title;
+        this.titulo = title;
     }
 
-    public Date getInitDate() {
-        return initDate;
+    @Override
+    public String getTitle() {
+        return titulo;
     }
 
-    public void setInitDate(Date initDate) {
-        this.initDate = initDate;
+    @Override
+    public void setStartDate(Date startDate) {
+        this.start = startDate;
     }
 
-    public Date getEndDate() {
-        return endDate;
+    @Override
+    public Date getStartDate() {
+        return start;
     }
 
+    @Override
     public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+        this.end = endDate;
+    }
+
+    @Override
+    public Date getEndDate() {
+        return end;
     }
 }

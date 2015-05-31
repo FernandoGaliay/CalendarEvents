@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="options">
+        <attr name="dateMode" format="enum">
+            <enum name="day" value="0"/>
+            <enum name="week" value="1"/>
+            <enum name="month" value="2"/>
+        </attr>
+        <attr name="dateIntervalSize" format="integer"/>
+    </declare-styleable>
+</resources>
