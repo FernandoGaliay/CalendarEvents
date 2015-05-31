@@ -127,16 +127,19 @@ public class CalendarEventView extends LinearLayout implements ViewPager.OnPageC
      * @param events
      */
     public void addEventsToSelectedDate(List<? extends Event> events) {
-        if(events != null || !events.isEmpty()) {
+        if (events != null || !events.isEmpty()) {
+            // Add events to the fragment
             SlideDayFragment fragment = (SlideDayFragment) screenSlidePagerAdapter.getRegisteredFragment(viewPager.getCurrentItem());
             fragment.setEventList(events);
+            // Save event in the FragmentPagerAdapter
+            screenSlidePagerAdapter.saveEventsInMap(events, viewPager.getCurrentItem());
         }
     }
 
     /**
      * Get listener for the onDateSelected event.
      *
-     * @return
+     * @return OnDateSelectedListener
      */
     public OnDateSelectedListener getOnDateSelectedListener() {
         return onDateSelectedListener;
@@ -152,12 +155,12 @@ public class CalendarEventView extends LinearLayout implements ViewPager.OnPageC
     }
 
     /**
-     * @param i
-     * @param v
-     * @param i1
+     * @param position
+     * @param positionOffset
+     * @param positionOffsetPixels
      */
     @Override
-    public void onPageScrolled(int i, float v, int i1) {
+    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
     }
 
     /**
@@ -174,17 +177,19 @@ public class CalendarEventView extends LinearLayout implements ViewPager.OnPageC
      */
     @Override
     public void onPageScrollStateChanged(int state) {
+        // On finish the page scrolling.
         if (state == ViewPager.SCROLL_STATE_IDLE) {
             Date dateByPosition = screenSlidePagerAdapter.getDateByPosition(viewPager.getCurrentItem());
-            // First position
+            // If first page, add new dates before the initial position.
             if (viewPager.getCurrentItem() == 0) {
                 screenSlidePagerAdapter.addDates(0, DateUtil.previousDates(dateIntervalSize, dateByPosition));
                 viewPager.setCurrentItem(dateIntervalSize, false);
             }
-            // Last position
+            // If last page, add new dates after the last position.
             else if (viewPager.getCurrentItem() == screenSlidePagerAdapter.getCount() - 1) {
                 screenSlidePagerAdapter.addDates(DateUtil.nextDates(dateIntervalSize, dateByPosition));
             }
+            // Call onDateSelected event and then, fill the date page with the events received.
             if (onDateSelectedListener != null) {
                 List<? extends Event> events = onDateSelectedListener.onDateSelected(viewPager.getCurrentItem(), dateByPosition);
                 addEventsToSelectedDate(events);

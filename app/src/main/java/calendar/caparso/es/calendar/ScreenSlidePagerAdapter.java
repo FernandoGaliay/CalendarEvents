@@ -47,6 +47,7 @@ class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.dateList = dateList;
         this.calendarMode = mode;
+        this.dateEventsHashMap = new HashMap<Integer, List<? extends Event>>();
     }
 
     /**
@@ -55,7 +56,7 @@ class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
      */
     @Override
     public SlideDayFragment getItem(int position) {
-        return new SlideDayFragment().newInstance(new ArrayList<Event>());
+        return new SlideDayFragment().newInstance(getEventFromMap(position));
     }
 
     /**
@@ -188,5 +189,17 @@ class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
      */
     public void setDateList(List<Date> dateList) {
         this.dateList = dateList;
+    }
+
+    public void saveEventsInMap(List<? extends Event> events, Integer position) {
+        dateEventsHashMap.put(position, events);
+    }
+
+    private List<? extends Event> getEventFromMap(int position) {
+        List<? extends Event> events = dateEventsHashMap.get(position);
+        if (events == null) {
+            events = new ArrayList<Event>();
+        }
+        return events;
     }
 }
