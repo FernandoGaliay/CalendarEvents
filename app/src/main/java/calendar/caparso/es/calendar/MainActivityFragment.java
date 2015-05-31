@@ -2,19 +2,16 @@ package calendar.caparso.es.calendar;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.viewpagerindicator.TitlePageIndicator;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import calendar.caparso.es.calendar.util.DateUtil;
 import calendar.caparso.es.calendar.vo.Event;
 import calendar.caparso.es.calendar.vo.EventVO;
 
@@ -34,7 +31,7 @@ public class MainActivityFragment extends Fragment {
         ViewGroup rootView = (ViewGroup) inflater.inflate(
                 R.layout.fragment_main, container, false);
 
-        CalendarEventView calendarEventView = (CalendarEventView) rootView.findViewById(R.id.ce_day);
+        final CalendarEventView calendarEventView = (CalendarEventView) rootView.findViewById(R.id.ce_day);
         calendarEventView.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
             public List<? extends Event> onDateSelected(int position, Date pageDate) {
@@ -42,6 +39,13 @@ public class MainActivityFragment extends Fragment {
             }
         });
 
+        TextView tvAddEvents = (TextView) rootView.findViewById(R.id.tv_add_events);
+        tvAddEvents.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+              calendarEventView.addEventsToSelectedDate(getEventList());
+            }
+        });
         return rootView;
     }
 

@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Calendar Events</string>
+    <string name="add_event">Add Events</string>
+    <string name="empty_event">There are no events.</string>
 </resources>

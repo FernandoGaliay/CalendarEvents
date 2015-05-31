@@ -6,6 +6,13 @@
               android:orientation="vertical"
               tools:context=".MainActivityFragment">
 
+    <TextView
+        android:id="@+id/tv_add_events"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:text="@string/add_event"/>
+
     <calendar.caparso.es.calendar.CalendarEventView
         android:id="@+id/ce_day"
         android:layout_width="match_parent"

@@ -127,8 +127,10 @@ public class CalendarEventView extends LinearLayout implements ViewPager.OnPageC
      * @param events
      */
     public void addEventsToSelectedDate(List<? extends Event> events) {
-        SlideDayFragment fragment = (SlideDayFragment) screenSlidePagerAdapter.getRegisteredFragment(viewPager.getCurrentItem());
-        fragment.setEventList(events);
+        if(events != null || !events.isEmpty()) {
+            SlideDayFragment fragment = (SlideDayFragment) screenSlidePagerAdapter.getRegisteredFragment(viewPager.getCurrentItem());
+            fragment.setEventList(events);
+        }
     }
 
     /**
