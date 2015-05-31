@@ -67,11 +67,21 @@ public class DateUtil {
         return dateList;
     }
 
-    public static SimpleDateFormat getHourFormat(){
+    /**
+     * Format date to HH:mm.
+     *
+     * @return SimpleDateFormat.
+     */
+    public static SimpleDateFormat getHourFormat() {
         return new SimpleDateFormat("HH:mm");
     }
 
-    public static SimpleDateFormat getDayFormat(){
+    /**
+     * Format date to EEE dd.
+     *
+     * @return SimpleDateFormat.
+     */
+    public static SimpleDateFormat getDayFormat() {
         return new SimpleDateFormat("EEE dd");
     }
 

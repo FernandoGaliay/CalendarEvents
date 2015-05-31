@@ -20,7 +20,6 @@ import calendar.caparso.es.calendar.vo.EventVO;
  */
 public class MainActivityFragment extends Fragment {
 
-    // Un mes por delante y por detras.
     private int DATE_INTERVAL_SIZE = 60;
 
     private int DAY_MODE = 0;

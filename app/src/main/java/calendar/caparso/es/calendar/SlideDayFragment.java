@@ -23,10 +23,22 @@ public class SlideDayFragment extends Fragment {
 
     private static String EVENTS_DATA = "EVENTS_DATA";
 
+    /**
+     * List of the events that are going to shown in the list.
+     */
     private List<? extends Event> eventList;
 
+    /**
+     * List adapter with day design.
+     */
     private DayAdapter dayAdapter;
 
+    /**
+     * Default constructor
+     *
+     * @param events List of the events that are going to shown in the list.
+     * @return SlideDayFragment
+     */
     public static SlideDayFragment newInstance(List<? extends Event> events) {
         SlideDayFragment f = new SlideDayFragment();
         Bundle args = new Bundle();
@@ -35,6 +47,9 @@ public class SlideDayFragment extends Fragment {
         return f;
     }
 
+    /**
+     * @param savedInstanceState
+     */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +59,12 @@ public class SlideDayFragment extends Fragment {
         }
     }
 
+    /**
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -53,12 +74,17 @@ public class SlideDayFragment extends Fragment {
         ListView lvCalendar = (ListView) rootView.findViewById(R.id.lv_calendar);
         TextView tvEmpty = (TextView) rootView.findViewById(R.id.tv_empty);
         lvCalendar.setEmptyView(tvEmpty);
-        dayAdapter = new DayAdapter(getActivity(), R.layout.row_event, (List<Event>)eventList);
+        dayAdapter = new DayAdapter(getActivity(), R.layout.row_event, (List<Event>) eventList);
         lvCalendar.setAdapter(dayAdapter);
 
         return rootView;
     }
 
+    /**
+     * Refresh the list of the events.
+     *
+     * @param eventList
+     */
     public void setEventList(List<? extends Event> eventList) {
         this.eventList = eventList;
         if (dayAdapter != null)
